@@ -4,7 +4,7 @@
 
 ### 0NF 
 
-**Customer:**(<b class="pk">CustomerNumber</b>,FirstName,LastName,Address,City,Province,PostalCode,HomePhone)
+**Customer:**<span class="md"><b class="pk">CustomerNumber</b>,FirstName,LastName,Address,City,Province,PostalCode,HomePhone</span>
 
 ### 1NF-3NF
 
@@ -18,9 +18,25 @@
 
 ### 0NF
 
-**Order:** (<b class="pk">OrderNumber</b>,CustomerNumber,FirstName,LastName,Address,City,Province,PostalCode,Phone,Date, <b class="rg">ItemNumber,Description,Quantity,CurrentPrice,SellingPrice,Amount</b>,Subtotal,GST,Total )
+**Order:** <span class="md"><b class="pk">OrderNumber</b>,CustomerNumber,FirstName,LastName,Address,City,Province,PostalCode,Phone,Date, <b class="rg">ItemNumber,Description,Quantity,CurrentPrice,SellingPrice,Amount</b>,Subtotal,GST,Total</span> 
 
+### 1NF 
 
+**Order:** <span class="md"><b class="pk">OrderNumber</b>,CustomerNumber,FirstName,LastName,Address,City,Province,PostalCode,Phone,Date,Subtotal,GST,Total</span> 
+
+**OrderDetail:**<span class="md"><b class="pk"><u class="fk">OrderNumber</u>,ItemNumber</b>,Description,Quantity,CurrentPrice,SellingPrice,Amount</span>
+
+### 2NF
+
+**OrderDetail:**<span class="md"><b class="pk"><u class="fk">OrderNumber</u>,<u class="fk">ItemNumber</u></b>,Quantity,SellingPrice,Amount</span>
+
+**Item:** <span class="md"><b class="pk">ItemNumber</b>,Description,CurrentPrice</span>
+
+### 3NF
+
+**Order** <span class="md"><b class="pk">OrderNumber</b>, <u class="fk">CustomerNumber</u>,Date,Subtotal,GST,Total</span>
+
+**Customer** <span class="md"><b class="pk">CustomerNumber</b>,FirstName,LastName,Address,City,Province,PostalCode,Phone</span>
 
 ----
 
@@ -48,12 +64,12 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
 }
 .md::before {
     content: '(';
-    font-size: 1.25cm
+    font-size: 1.25em;
     font-weight: bold;
 }
 .md::after {
     content: ')';
-    font-size: 1.25cm
+    font-size: 1.25em;
     font-weight: bold;
 }
 .pk {
@@ -65,7 +81,7 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
 }
 .pk::before {
     content: 'P';
-    font-size: .55cm;
+    font-size: .55em;
     font-weight: bold;
     color: white;
     background-color: #72c4f7;
@@ -74,8 +90,8 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
     top: -15px;
     border-radius: 50%;
     border: solid thin blue;
-    width:1.4cm;
-    height:1.4cm;
+    width:1.4em;
+    height:1.4em;
     padding: 3px;
     text-align: center;
 }
@@ -89,7 +105,7 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
 }
 .fk::before {
     content: 'F';
-    font-size: .65cm;
+    font-size: .65em;
     position: absolute;
     left: -1px;
     bottom: -17px;
@@ -97,15 +113,15 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
     background-color: #a7dea7;
     border-radius: 50%;
     border: dashed thin green;
-    width: 1.4cm;
-    height: 1.4cm;
+    width: 1.4em;
+    height: 1.4em;
     padding: 3px;
     text-align: center;
 }
 .rg {
     display: inline-block;
     color: inherit;
-    font-size: 1cm;
+    font-size: 1em;
     font-weight: normal;
 }
 .rg::before {
@@ -117,7 +133,7 @@ This legend is a guide to reading and interpreting the table listings under 0NF 
 .rg:after {
     content: '\007D';
     color: darkorange;
-    font-size: 1.2cm;
+    font-size: 1.2em;
     font-weight: bold;
 }
 .note {
