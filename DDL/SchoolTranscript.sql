@@ -37,10 +37,10 @@ CREATE TABLE Courses
     [Name]          varchar(50)     NOT NULL,
     Credits         decimal(3,1)    NOT NULL,
     [Hours]         tinyint         NOT NULL,
-    Active          bit             NOT NULL,
-    Cost            money           
-         CONSTRAINT DF_Courses_Enrolled
-            DEFAULT (1)             NOT NULL
+    Active          bit
+        CONSTRAINT DF_Courses_Active
+             DEFAULT (1)            NOT NULL,
+    Cost            money           NOT NULL
 )
 CREATE TABLE StudentCourses
 (
