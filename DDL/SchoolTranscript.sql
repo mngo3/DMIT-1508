@@ -19,12 +19,16 @@ CREATE TABLE Students
 (
     StudentID       int
         CONSTRAINT PK_Students_StudentID
-            PRIMARY KEY             NOT NULL,
+            PRIMARY KEY
+        IDENTITY(20200001, 1)       NOT NULL,
     GivenName       varchar(50)     NOT NULL,
     Surname         varchar(50)     NOT NULL,
     DateOfBirth     datetime        NOT NULL,
-    Enrolled        bit             NOT NULL
+    Enrolled        bit             
+        CONSTRAINT DF_Students_Enrolled
+            DEFAULT (1)             NOT NULL
 )
+
 CREATE TABLE Courses
 (
     Number          varchar(10)
@@ -34,7 +38,9 @@ CREATE TABLE Courses
     Credits         decimal(3,1)    NOT NULL,
     [Hours]         tinyint         NOT NULL,
     Active          bit             NOT NULL,
-    Cost            money           NOT NULL
+    Cost            money           
+         CONSTRAINT DF_Courses_Enrolled
+            DEFAULT (1)             NOT NULL
 )
 CREATE TABLE StudentCourses
 (
