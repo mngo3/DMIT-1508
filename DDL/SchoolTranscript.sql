@@ -89,6 +89,11 @@ CREATE TABLE StudentCourses
                                     NOT NULL,
     -- Table-level constraint for composite key
     CONSTRAINT PK_StudentCourses_StudentID_CourseNumber
-        PRIMARY KEY (StudentID,CourseNumber)
+        PRIMARY KEY (StudentID,CourseNumber),
+    -- Table-level constraint involving more than one column
+    CONSTRAINT CK_StudentCourses_FinalMark_Status
+        CHECK (([Status] = 'C' AND FinalMark IS NOT NULL)
+            OR
+            ([Status] IN ('E','W') AND FinalMark IS NULL))
 )
 
