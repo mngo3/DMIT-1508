@@ -80,7 +80,13 @@ CREATE TABLE StudentCourses
     [Year]          tinyint         NOT NULL,
     Term            char(3)         NOT NULL,
     FinalMark       tinyint             NULL,
-    [Status]        char(1)         NOT NULL,
+    [Status]        char(1)
+        CONSTRAINT CK_StudentCourses_Status
+            CHECK ([Status] = 'E' OR 
+                   [Status] = 'C' OR
+                   [Status] = 'W')
+--          CHECK ([Status] IN ('E','C','W'))                           
+                                    NOT NULL,
     -- Table-level constraint for composite key
     CONSTRAINT PK_StudentCourses_StudentID_CourseNumber
         PRIMARY KEY (StudentID,CourseNumber)
