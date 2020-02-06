@@ -97,3 +97,31 @@ CREATE TABLE StudentCourses
             ([Status] IN ('E','W') AND FinalMark IS NULL))
 )
 
+
+/* ------- Indexes ------- */
+-- For all foreign keys
+CREATE NONCLUSTERED INDEX IX_StudentCourses_StudentID
+    ON StudentCourses (StudentID)
+
+CREATE NONCLUSTERED INDEX IX_StudentCourses_CourseNumber
+    ON StudentCourses (CourseNumber)     
+
+ -- For other columns where searching/sorting might be important
+ CREATE NONCLUSTERED INDEX IX_Students_Surname
+    ON Students (Surname)     
+
+/* ------ ALTER TABLE statements -------- */
+-- 1) Add a PostalCode for the Students table
+ALTER TABLE Students
+    ADD PostalCode char(6) NULL
+    -- Adding this as a nullable column, because students already exist,
+    -- and we don't have postal code for those students.
+
+GO -- I have to break the above code as a separte batch from the following
+
+-- 2) Make sure the PostalCode follows the correct pattern A#A#A#
+ALTER TABLE Students 
+    ADD CONSTRAINT CK_Students_PostalCode
+        CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')
+        -- Match for T4R1H2 :     T    4    R    1    H    2
+GO
