@@ -6,7 +6,7 @@ USE SchoolTranscript
 Go
 
 INSERT INTO Students(GivenName, SurName, DateofBirth) -- notice no Enrolled column
-VALUES ('Minh', 'Ngo','19720514 10:34:09 PM'),
+VALUES ('Dan', 'Gilleland','19720514 10:34:09 PM'),
 		('Charles','Kuhn','19990806 00:00:00 AM'),
 		('Michele','Lewis','19810610 00:00:00 AM'),
 		('Penny','Harrison','19961104 00:00:00 AM'),
@@ -30,3 +30,16 @@ INSERT INTO Students(GivenName, SurName, DateofBirth) -- notice no Enrolled colu
 VALUES ('Minh', 'Ngo','19720514 10:34:09 PM'),
 */
 
+SELECT	Number,[Name],Credits,[Hours]
+FROM	Courses
+WHERE	[Name] LIKE '%Fundamentals%'
+
+-- Write a query to get the first/last name of all students
+-- whose last name starts with a "G"
+
+SELECT	GivenName,SurName
+FROM	Students
+WHERE	Surname LIKE '%G%'	
+
+-- Removing all the data from the Students table
+DELETE FROM Students
