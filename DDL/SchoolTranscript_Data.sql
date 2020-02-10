@@ -39,7 +39,7 @@ WHERE	[Name] LIKE '%Fundamentals%'
 
 SELECT	GivenName,SurName
 FROM	Students
-WHERE	Surname LIKE '%G%'	
+WHERE	GivenName LIKE '%G%' OR Surname LIKE '%G%'
 
 -- Removing all the data from the Students table
 DELETE FROM Students
