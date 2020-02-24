@@ -88,7 +88,8 @@ FROM	Payment
 SELECT PaymentTypeDescription
 FROM   PaymentType
 -- TODO: Student Answer Here
-
+SELECT	COUNT(PaymentTypeID)
+FROM	PaymentType
 --10. How many students are in club 'CSS'?
 -- TODO: Student Answer Here
 SELECT COUNT(StudentID)
