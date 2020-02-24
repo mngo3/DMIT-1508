@@ -5,6 +5,9 @@
 Use [A01-School]
 GO
 
+-- Q.	What is the average of the following numbers?
+--		97 43 53 29 40 77 10 55 37 82
+
 --1.	Select the average Mark from all the Marks in the registration table
 SELECT  AVG(Mark) AS 'Average Mark'
 FROM    Registration
@@ -30,13 +33,16 @@ FROM    Student
 SELECT  COUNT(1) AS 'Student Count'
 FROM    Student
 
+--SELECT COUNT(NULL) AS 'Student Count'
+--FROM	Student
+
 -- 3.c  Select how many people are in the Staff table
 SELECT  COUNT(StaffID) AS 'Staff Count' -- It's common to use the PK as the column that you're counting
 FROM    Staff
 
 -- 3.d  Do a count of the people in the Staff table who are no longer working here
 --      Refresh your memory about all the data in the Staff table
-SELECT  * FROM Staff
+--SELECT  * FROM Staff
 SELECT  COUNT(DateReleased) AS 'Retired Staff'
 FROM    Staff
 
@@ -56,20 +62,26 @@ WHERE   CourseId = 'DMIT152'
     WHERE   CourseId = 'DMIT152'
 
 --5.	Select the average payment amount for payment type 5
+-- SELECT * FROM Payment
 -- TODO: Student Answer Here - Hint: It's in the Payment table....
-
-
+SELECT AVG(Amount) As 'Average payment amount'
+FROM	Payment
+Where	PaymentTypeID ='5'
 -- Given that there are some other aggregate methods like MAX(columnName) and MIN(columnName), complete the following two questions:
 --6. Select the highest payment amount
 -- TODO: Student Answer Here
-
+SELECT MAX(Amount)
+FROM	Payment
 
 --7.	 Select the lowest payment amount
 -- TODO: Student Answer Here
-
+SELECT MIN(Amount)
+FROM	Payment
 
 --8. Select the total of all the payments that have been made
 -- TODO: Student Answer Here
+SELECT	SUM(Amount)
+FROM	Payment
 
 --9. How many different payment types does the school accept?
 -- Do a bit of exploratory selects
@@ -79,4 +91,6 @@ FROM   PaymentType
 
 --10. How many students are in club 'CSS'?
 -- TODO: Student Answer Here
-
+SELECT COUNT(StudentID)
+FROM	Activity
+WHERE	ClubId ='CSS'
