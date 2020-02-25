@@ -106,7 +106,7 @@ SELECT      StaffID,
             AVG(Mark) AS 'Average course mark'
 FROM        Registration
 GROUP BY    StaffID
-
+ORDER BY    COUNT(StaffID) ASC
 
 --12. How many male and female students do we have?
 SELECT      Gender,
