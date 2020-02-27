@@ -31,8 +31,11 @@ ORDER BY 'Average Mark' DESC
 
 --3. How many payments where made for each payment type. Display the PaymentTypeDescription and the count.
  -- TODO: Student Answer Here... 
-
- 
+SELECT PaymentTypeDescription,
+        COUNT(P.Amount) AS 'Payments'
+ FROM    Payment AS P
+    INNER JOIN  PaymentType AS PT ON PT.PaymentTypeID = P.PaymentTypeID
+  GROUP BY PaymentTypeDescription
 --4. Select the average Mark for each student. Display the Student Name and their average mark. Use table aliases in your FROM & JOIN clause.
 SELECT  S.FirstName  + ' ' + S.LastName AS 'Student Name',
         AVG(R.Mark)                     AS 'Average'
@@ -52,3 +55,5 @@ GROUP BY    S.FirstName  + ' ' + S.LastName  -- Since my non-aggregate is an exp
  
 --7. Which clubs have 3 or more students in them? Display the Club Names.
  -- TODO: Student Answer Here... 
+
+ 
