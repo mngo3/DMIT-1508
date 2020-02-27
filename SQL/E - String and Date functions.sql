@@ -22,7 +22,7 @@ GO
     SELECT REVERSE('Dan')
     -- (Club whose id is a palindrome)
     -- Select the insert statement below to add a row into the Club table
-    -- INSERT INTO Club(ClubId, ClubName) VALUES ('ABCBA', 'Active Bat Catching Brotherhood Assoc.')
+     --INSERT INTO Club(ClubId, ClubName) VALUES ('ABCBA', 'Active Bat Catching Brotherhood Assoc.')
 	SELECT	ClubId, ClubName
 	FROM	Club
 	WHERE   ClubId = REVERSE(ClubId)
@@ -43,7 +43,7 @@ GO
     SELECT FirstName, MONTH(Birthdate) AS 'Birth Month' FROM Student
     WHERE  MONTH(Birthdate) = DATEPART(MONTH, GETDATE())
 	-- YEAR
-	-- DATEDIFF - Staff.DateHired - DateReleased
+	-- DATEDIFF - DateReleased - Staff.DateHired 
 	SELECT FirstName + ' ' + LastName AS 'Staff Name',
 	       DATEDIFF(DAY, DateHired, DateReleased) AS 'Days Employed'
            -->> DateReleased - DateHired, expressed as number of Days
@@ -91,17 +91,22 @@ WHERE   Mark IS NOT NULL
   AND   LEFT(Semester, 4) = 2004
 
 -- 6. select last three characters of all the courses
+SELECT	RIGHT(CourseName,3)
+FROM	Course
 
 
 -- 7. Select the characters in the position description from characters 8 to 13 for PositionID 5
-
-
+SELECT	SUBSTRING(PositionDescription,8,13),PositionID
+FROM	Position
+WHERE   PositionID = 5 
 -- 8. Select all the Student First Names as upper case.
-
+SELECT	UPPER(FirstName)
+FROM	Student
 
 -- 9. Select the First Names of students whose first names are 3 characters long.
-
-
+SELECT	LEFT(FirstName,3)
+FROM	Student
+--WHERE	LEN(FirstName,3)
 /* ************************************************
     String Functions
     ================
@@ -118,7 +123,7 @@ WHERE   Mark IS NOT NULL
     LOWER ( character_expression )                                          SELECT LOWER('AWESOME!')
     UPPER ( character_expression )                                          SELECT UPPER('boring')
     REPLACE ( string_expression , string_pattern , string_replacement )     SELECT REPLACE('Daniel', 'iel', 'YELL')
-
+	CHARINDEX (Substring,string [,start_location] )							SELECT CHARINDEX('','Hello World')
 
 
     DATE Functions
