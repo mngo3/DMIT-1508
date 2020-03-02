@@ -3,6 +3,12 @@ USE [A01-School]
 GO
 
 --1. How many staff are there in each position? Select the number and Position Description
+SELECT  PositionDescription,
+        StaffID
+FROM    Staff AS S
+    INNER JOIN Position AS P ON P.PositionID = S.PositionID
+ORDER BY PositionDescription
+--Answer
 SELECT  PositionDescription,                    --  <-- non-aggregate
         COUNT(S.StaffID) AS 'Number of Staff'   --  <-- aggregate
 FROM    Staff AS S
@@ -25,8 +31,11 @@ ORDER BY 'Average Mark' DESC
 
 --3. How many payments where made for each payment type. Display the PaymentTypeDescription and the count.
  -- TODO: Student Answer Here... 
-
- 
+SELECT PaymentTypeDescription,
+        COUNT(P.Amount) AS 'Payments'
+ FROM    Payment AS P
+    INNER JOIN  PaymentType AS PT ON PT.PaymentTypeID = P.PaymentTypeID
+  GROUP BY PaymentTypeDescription
 --4. Select the average Mark for each student. Display the Student Name and their average mark. Use table aliases in your FROM & JOIN clause.
 SELECT  S.FirstName  + ' ' + S.LastName AS 'Student Name',
         AVG(R.Mark)                     AS 'Average'
@@ -38,11 +47,18 @@ GROUP BY    S.FirstName  + ' ' + S.LastName  -- Since my non-aggregate is an exp
 
 --5. Select the same data as question 4 but only show the student names and averages that are 80% or higher. (HINT: Remember the HAVING clause?)
  -- TODO: Student Answer Here... 
-
-
+ SELECT  S.FirstName  + ' ' + S.LastName AS 'Student Name',
+        AVG(R.Mark)                     AS 'Average'
+FROM    Registration AS R
+        INNER JOIN Student AS S
+            ON S.StudentID = R.StudentID
+GROUP BY    S.FirstName  + ' ' + S.LastName
+HAVING  AVG(R.Mark) >= 80
 --6. What is the highest, lowest and average payment amount for each payment type Description?
  -- TODO: Student Answer Here... 
 
  
 --7. Which clubs have 3 or more students in them? Display the Club Names.
  -- TODO: Student Answer Here... 
+
+ 
