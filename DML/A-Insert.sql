@@ -16,6 +16,12 @@ GO -- Execute the code up to this point as a single batch
     VALUES ('A', 'Value', 'Per', 'Column'),
            ('Another', 'Row', 'Of', 'Values')
     
+	When inserting values, you can use subqueries for individual values 
+	provided that the subquery returns a single value.
+
+	INSERT INTO TableName(Comma, Seperated, ListOf, ColumnNames)
+	VALUES ('A', (SELECT SingleValue FROM SomeTable), 'Per', 'Column')
+
     Another syntax for the INSERT statement is to use a SELECT clause in place
     of the VALUES clause. This is used for zero-to-many possible rows to insert.
 
@@ -49,6 +55,10 @@ WHERE   PositionID NOT IN (SELECT PositionID FROM Staff)
 --      Add Sheldon Murray as the new Assistant Dean.
 -- TODO: Student Answer Here....
 
+INSERT INTO Staff(FirstName,LastName,DateHired,PositionID)
+SELECT 'Sheldon','Murray', GETDATE(), PositionID 
+FROM	Position
+WHERE	PositionDescription = 'Assistant Dean'
 -- 3. There are three additional clubs being started at the school:
 --      - START - Small Tech And Research Teams
 --      - CALM - Coping And Lifestyle Management
@@ -63,8 +73,24 @@ VALUES ('START', 'Small Tech And Research Teams'),
 -- 4. In your web browser, use https://randomuser.me/ to get information on three
 --    people to add as new students. Write separate insert statement for each new student.
 -- TODO: Student Answer Here....
+-- Select * From Student
+INSERT INTO Student(FirstName,LastName,Gender,StreetAddress,Birthdate)
+VALUES ('Jean','Mitchell','F','5681 Adams St','1959-07-08 00:00:00'),
+	   ('Brianna','Wallace','F','7481 Timber Wolf Trail','1987-03-02 00:00:00'),
+	   ('Marilyn','Sullivan','F','372 Pockrus Page Rd','1968-06-10 00:00:00')
+
 
 
 -- 5. Enroll each of the students you've added into the DMIT777 course.
 --    Use 'Dan Gilleland' as the instructor. At this point, their marks should be NULL.
 -- TODO: Student Answer Here....
+-- Select * from Registration
+INSERT INTO Registration(StudentID,Semester,WithdrawYN)
+VALUES	('200978401',
+	   (SELECT StudentID
+	    FROM Registration 
+		WHERE CourseId ='DMIT777'),
+	   (SELECT StaffID
+	    FROM   Staff
+		WHERE  FirstName='Dan' AND LastName ='Gilleland'))
+	    
