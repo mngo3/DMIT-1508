@@ -6,6 +6,7 @@ GO
 
 -- Take the following queries and turn them into stored procedures.
 
+
 -- 1.   Selects the studentID's, CourseID and mark where the Mark is between 70 and 80
 SELECT  StudentID, CourseId, Mark
 FROM    Registration
