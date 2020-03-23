@@ -2,15 +2,16 @@
 -- Demonstrate using Transactions in a Stored Procedure
 
 -- What is a Transaction?
--- A transaction is typically needed when we do two or more of an Insert/Update/Delete
--- A transaction must succeed or fail as a group.
+--  A transaction is typically needed when we do two or more of an Insert/Update/Delete.
+--  A transaction must succeed or fail as a group.
 -- How do we start a Transaction?
--- BEGIN TRANSACTION
---      The BEGIN TRANSACTION only needs to be stated once
--- To make a transaction succeed, we use the statement COMMIT TRANSACTION.
---      The COMMIT TRANSACTION should only be used once
+--  BEGIN TRANSACTION
+--      the BEGIN TRANSACTION only needs to be stated once
+-- To make a transaction succeed, we use the statement COMMIT TRANSACTION
+--      the COMMIT TRANSACTION should only be used once
 -- To make a transaction fail, we use the statement ROLLBACK TRANSACTION
---       We will have one ROLLBACK TRANSACTION for every Insert/Update/Delete in our stored procedure.
+--      We will have one ROLLBACK TRANSACTION for every Insert/Update/Delete in our stored procedure
+
 USE [A01-School]
 GO
 
@@ -28,8 +29,8 @@ GO
 
 
 -- 1. Add a stored procedure called TransferCourse that accepts a student ID, semester, and two course IDs: the one to move the student out of and the one to move the student in to.
---      - Withdraw the student from one course UPDATE
---      - Add the student to the other course  INSERT
+--      - Withdraw the student from one course  UPDATE
+--      - Add the student to the other course   INSERT
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'TransferCourse')
     DROP PROCEDURE TransferCourse
 GO
@@ -58,7 +59,7 @@ AS
         WHERE  StudentID = @StudentID
           AND  CourseId = @LeaveCourseID
           AND  Semester = @Semester
-          AND  (WithdrawYN = 'N' OR WithdrawYN IS NULL) -- this could result in 0 rows affected 
+          AND  (WithdrawYN = 'N' OR WithdrawYN IS NULL) -- this could result in 0 rows affected
         --         Check for error/rowcount
         IF @@ERROR > 0 OR @@ROWCOUNT = 0
         BEGIN
@@ -91,13 +92,15 @@ AS
 RETURN
 GO
 
--- Test my stored procedure 
+-- Test my stored procedure
 -- sp_help TransferCourse
 -- SELECT * FROM Registration
 -- SELECT * FROM Course
-EXEC TransferCourse 199899200, '2004J','DMIT152','DMIT101'
-
-
+EXEC TransferCourse 199899200, '2004J', 'DMIT152', 'DMIT101'
+-- Testing with "bad" data
+EXEC TransferCourse 5, '2004J', 'DMIT152', 'DMIT101'            -- Bad StudentID
+EXEC TransferCourse 199899200, '2020J', 'DMIT152', 'DMIT101'    -- Bad Semester
+EXEC TransferCourse 199899200, '2004J', 'DMIT101', 'DMIT999'    -- Non-existing Course to enter
 
 
 
@@ -475,4 +478,3 @@ AS
     END
 RETURN
 GO
-
