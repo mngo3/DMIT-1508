@@ -102,8 +102,6 @@ EXEC TransferCourse 5, '2004J', 'DMIT152', 'DMIT101'            -- Bad StudentID
 EXEC TransferCourse 199899200, '2020J', 'DMIT152', 'DMIT101'    -- Bad Semester
 EXEC TransferCourse 199899200, '2004J', 'DMIT101', 'DMIT999'    -- Non-existing Course to enter
 
-
-
 -- 2. Add a stored procedure called AdjustMarks that takes in a course ID. The procedure should adjust the marks of all students for that course by increasing the mark by 10%. Be sure that nobody gets a mark over 100%.
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'AdjustMarks')
     DROP PROCEDURE AdjustMarks
@@ -181,6 +179,7 @@ AS
         DECLARE @CourseCost     money
         -- Assign a value to each of the local variables
         SELECT @MaxStudents = MaxStudents FROM Course WHERE CourseId = @CourseID
+        -- SET @MaxStudent = (SELECT MaxStudent FROM Course WHERE CourseId = @CourseID)
         SELECT @CurrentCount = COUNT (StudentID) FROM Registration WHERE CourseId = @CourseID AND Semester = @Semester
         SELECT @CourseCost = CourseCost FROM Course WHERE CourseId = @CourseID
 
@@ -222,16 +221,20 @@ RETURN
 
 GO
 -- Test RegisterStudent
--- SELECT * from Registration -- 2004J AND CourseID= 'DMIT152'
--- SELECT * From Student 
--- SELECT * From Course Where CourseID = 'DMIT152'
---198933540----------200011730--200122100--200312345--200322620----200494476--200495500--200522220--200578400--200645320
-EXEC RegisterStudent 199912010,'DMIT152','2004J'
-EXEC RegisterStudent 199966250,'DMIT152','2004J'
-EXEC RegisterStudent 200494470,'DMIT152','2004J'
-EXEC RegisterStudent 199899200,'DMIT152','2004J'
+-- SELECT * FROM Registration WHERE Semester = '2004J' AND CourseID = 'DMIT152'
+-- SELECT * FROM Student
+-- SELECT * FROM Course WHERE CourseID = 'DMIT152'
+------------200322620--200494470--200494476--200495500--200522220--200578400--200645320
+-- We already have one student in this class/semester, let's add 4 more
+EXEC RegisterStudent 199912010, 'DMIT152', '2004J'
+EXEC RegisterStudent 199966250, 'DMIT152', '2004J'
+EXEC RegisterStudent 200011730, 'DMIT152', '2004J'
+EXEC RegisterStudent 200122100, 'DMIT152', '2004J'
+-- There is a maximum of 5 student in this course, so the following should produce an error
+-- and not actually add the student
+EXEC RegisterStudent 200312345, 'DMIT152', '2004J'
 
-EXEC RegisterStudent 198933540,'DMIT152','2004J'
+
 -- 4. Add a stored procedure called WitnessProtection that erases all existence of a student from the database. The stored procedure takes the StudentID, first and last names, gender, and birthdate as parameters. Ensure that the student exists in the database before removing them (all the parameter values must match).
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'WitnessProtection')
     DROP PROCEDURE WitnessProtection
@@ -271,7 +274,7 @@ AS
             END
             ELSE
             BEGIN
-                DELETE Payment
+                DELETE FROM Payment
                 WHERE  StudentID = @StudentID 
                 IF @@ERROR <> 0
                 BEGIN
@@ -363,7 +366,7 @@ CREATE PROCEDURE WithdrawStudent
     @Semester   char(5)
 AS
     -- Declare a bunch of local/temp variables
-    DECLARE @coursecost     decimal (6,2)
+    DECLARE @coursecost     decimal (6,2) -- basically equivalent to the money data type
     DECLARE @amount         decimal(6,2)
     DECLARE @balanceowing   decimal(6,2)
     DECLARE @difference     decimal(6,2)
@@ -380,7 +383,7 @@ AS
                          AND    CourseId = @CourseID
                          AND    Semester = @Semester)
         BEGIN
-          RAISERROR('that student does not exist in that registration', 16, 1)
+          RAISERROR('That student does not exist in that registration', 16, 1)
         END
         ELSE
         BEGIN
@@ -409,7 +412,7 @@ AS
 
                 SELECT  @difference = @balanceowing - @coursecost / 2
         
-                IF @difference >0
+                IF @difference > 0
                     SET @amount = @difference
                 ELSE
                     SET @amount = 0
@@ -438,7 +441,7 @@ GO
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ArchiveGrade')
     DROP TABLE ArchiveGrade
 
-CREATE TABLE ArchiveGrade
+CREATE TABLE ArchiveGrade -- Fairly simple - no PKs, no FKs, no CHECK
 (
     StudentID        int,
     CourseId        char (7),
