@@ -69,3 +69,11 @@ AS
     END
 RETURN
 GO
+
+-- Test my stored procedure 
+-- SELECT * FROM Club
+-- SELECT * FROM Activity
+
+EXEC DissolveClub 'CSS'
+EXEC DissolveClub 'NASA1'
+EXEC DissolveClub 'NAdsSA1'
