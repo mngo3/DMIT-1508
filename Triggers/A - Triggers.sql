@@ -3,6 +3,19 @@ USE [A01-School]
 GO
 
 /*
+If you recall about Transactions, they are used whenever we have 2 or more of an INSERT/UPDATE/DELETE
+A transaction holds the database changes in a temporary state and finalizes it with a COMMIT TRANSACTION.
+For individual INSERT/UPDATE/DELETE statements, SQL Server manages its own transaction for that change
+on the database table. SQL Server does this using two temporary tables it constructs for the DML statement.
+These temporary tables have the same columns that the table being affected has.
+- deleted
+- inserted
+
+Triggers are our opportunity to intercept the internal transaction that SQL server does for each INSERT/UPDATE/DELETE.
+Triggers are never called directly by our scripts, instead they are called (or "triggered") by SQL server 
+as it performs its internal transaction.
+*/
+/*
 IF EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[dbo].[Table_TriggerType]'))
     DROP TRIGGER Table_TriggerType
 GO
@@ -21,7 +34,8 @@ IF EXISTS (SELECT * FROM sys.triggers WHERE object_id = OBJECT_ID(N'[dbo].[Activ
 GO
 
 CREATE TRIGGER Activity_DML_Diagnostic
-ON Activity
+ON Activity -- This trigger is "attached" to the Activity table
+-- This trigger will be called anytime there is an INSERT/UPDATE/DELETE
 FOR Insert, Update, Delete -- Choose only the DML statement(s) that apply
 AS
     -- Body of Trigger
